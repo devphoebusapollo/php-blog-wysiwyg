@@ -41,4 +41,37 @@ if(isset($_REQUEST['update'])) {
 
     header("Location: http://localhost:8080/xampp/blogging-project/single-post.php?id=$id");
 };
+
+//FUNCTIONS
+/* Convert Timestamp into time ago */
+function timeago($datetime, $full = false) {
+  date_default_timezone_set('Asia/Manila');
+  $now = new DateTime;
+  $ago = new DateTime($datetime);
+  $diff = $now->diff($ago);
+  $diff->w = floor($diff->d / 7);
+  $diff->d -= $diff->w * 7;
+  $string = array(
+    'y' => 'yr',
+    'm' => 'mon',
+    'w' => 'week',
+    'd' => 'day',
+    'h' => 'hr',
+    'i' => 'min',
+    's' => 'sec',
+  );
+  foreach ($string as $k => &$v) {
+    if ($diff->$k) {
+      $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+    } 
+    else {
+      unset($string[$k]);
+    }
+  }
+  if (!$full) {
+    $string = array_slice($string, 0, 1);
+  }
+  
+  return $string ? implode(', ', $string) . '' : 'just now';
+};
 ?>
