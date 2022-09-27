@@ -31,6 +31,14 @@ if(isset($_REQUEST['id'])) {
 
 //Update
 if(isset($_REQUEST['update'])) {
-    echo "Post Updated";
+    $id = htmlspecialchars($_REQUEST['id']);
+    $updated_title = htmlspecialchars($_REQUEST['title']);
+    $updated_post = $_REQUEST['editor'];
+    $updated_category = htmlspecialchars($_REQUEST['category']);
+
+    $sql = "UPDATE posts SET title = '$updated_title', post = '$updated_post', category = '$updated_category' WHERE id = $id";
+    $single_blog_post = mysqli_query($conn, $sql);
+
+    header("Location: http://localhost:8080/xampp/blogging-project/single-post.php?id=$id");
 };
 ?>
